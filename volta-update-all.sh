@@ -1,16 +1,16 @@
 #!/usr/bin/env sh
-# volta-update-all.sh — update every Volta-managed tool
+# volta-update-all.sh - update every Volta-managed tool
 #
 # Flags:
 #   --dry-run         Show what would change, make no installs
 #   --self-update     Re-run the Volta installer first
 #   --exclude a,b,c   Comma-separated list of tool names to skip
 #
-# Works with POSIX sh — no Bash-only features.
+# Works with POSIX sh - no Bash-only features.
 
 set -eu
 IFS='
-'
+'  # newline
 
 # ─── CONFIG ────────────────────────────────────────────────────────────────────
 NODE_CHANNEL=lts       # change to "latest" if you prefer cutting-edge Node
