@@ -11,7 +11,7 @@
 
 set -eu
 IFS='
-'  # newline
+' # newline
 
 # ─── CONFIG ────────────────────────────────────────────────────────────────────
 NODE_CHANNEL=lts       # change to "latest" if you prefer cutting-edge Node
@@ -23,14 +23,14 @@ usage() {
   exit 1
 }
 
-contains() {  # $1 needle   $2 space-separated haystack
+contains() { # $1 needle   $2 space-separated haystack
   for _x in $2; do
     [ "$_x" = "$1" ] && return 0
   done
   return 1
 }
 
-current_version() {  # $1 tool-name → prints "22.16.0", or "" if absent
+current_version() { # $1 tool-name → prints "22.16.0", or "" if absent
   volta list --format=plain |
     awk -v t="$1" '
       {
@@ -49,6 +49,10 @@ while [ $# -gt 0 ]; do
   --self-update) SELF=1 ;;
   --exclude)
     shift
+    if [ $# -eq 0 ] || [ -z "$1" ] || expr "$1" : '-\{1,2\}' >/dev/null; then
+      echo "error: --exclude requires an argument." >&2
+      usage
+    fi
     EXCL=$1
     ;;
   -h | --help) usage ;;
@@ -85,6 +89,9 @@ done
 IFS=$OLD_IFS
 
 # ─── COLLECT INSTALLED TOOL NAMES ─────────────────────────────────────────────
+# Note: `volta list all` finds every tool Volta has registered, even if not
+# installed. The loop logic correctly handles this by treating tools with no
+# current version as a new installation.
 TOOLS=$(volta list all --format=plain |
   awk 'NF>=2 {print $2}' | cut -d@ -f1 | sort -u)
 
@@ -105,7 +112,11 @@ for T in $TOOLS; do
     continue
   fi
 
-  volta install --quiet "${T}@${CHAN}"
+  volta install --quiet "${T}@${CHAN}" ||
+    {
+      echo "❌ Failed to install $T" >&2
+      exit 1
+    }
 
   AFTER=$(current_version "$T")
 
