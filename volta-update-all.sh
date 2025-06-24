@@ -5,7 +5,7 @@
 #   --dry-run         Show what would change, make no installs
 #   --self-update     Re-run the Volta installer first
 #   --exclude a,b,c   Comma-separated list of tool names to skip
-#   --help, -h        Display the help message
+#   -h, --help        Display the help message
 #
 # Works with POSIX sh - no Bash-only features.
 
