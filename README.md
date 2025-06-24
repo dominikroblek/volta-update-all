@@ -4,7 +4,7 @@ A simple, POSIX-compliant shell script to update all tools managed by [Volta](ht
 
 ## Features
 
-- **Comprehensive Updates:** Keeps Node.js, npm, Yarn, pnpm, and all globally installed packages up-to-date.
+- **Comprehensive Updates:** Keeps Node.js, npm, Yarn, pnpm themselves on the *latest* or *LTS* channel you choose.
 - **Safe Dry Runs:** Preview potential changes with the `--dry-run` flag before applying them.
 - **Self-Update:** Optionally updates Volta itself to the latest version before updating your tools.
 - **Flexible Exclusions:** Skip updates for specific tools using the `--exclude` flag.
@@ -13,7 +13,10 @@ A simple, POSIX-compliant shell script to update all tools managed by [Volta](ht
 ## Prerequisites
 
 - [Volta](https://volta.sh/) must be installed and available in your `PATH`.
-- Standard command-line utilities like `curl` and `awk`.
+- Standard utilities: `curl`, any POSIX-compliant `awk`.
+- **To update pnpm** you must export
+  `export VOLTA_FEATURE_PNPM=1`
+  before running the script (Volta’s feature flag).
 
 ## Usage
 
