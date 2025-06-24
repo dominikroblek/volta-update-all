@@ -9,7 +9,8 @@
 #
 # Works with POSIX sh - no Bash-only features.
 
-set -eu
+set -euo pipefail
+
 IFS='
 ' # newline
 
