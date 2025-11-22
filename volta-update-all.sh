@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # volta-update-all.sh - update every Volta-managed tool
 #
 # Flags:
