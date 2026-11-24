@@ -24,7 +24,7 @@ usage() {
   exit 1
 }
 
-contains() { # $1 needle   $2 space-separated haystack
+contains() { # $1 needle   $2 newline-separated haystack
   for _x in $2; do
     [ "$_x" = "$1" ] && return 0
   done
@@ -82,13 +82,7 @@ if [ $SELF -eq 1 ]; then
 fi
 
 # ─── BUILD EXCLUDE LIST ───────────────────────────────────────────
-EXCLUDES=""
-OLD_IFS=$IFS
-IFS=','
-for _x in $EXCL; do
-  [ -n "$_x" ] && EXCLUDES="$EXCLUDES $_x"
-done
-IFS=$OLD_IFS
+EXCLUDES=$(printf '%s\n' "$EXCL" | tr ',' '\n')
 
 # ─── COLLECT INSTALLED TOOL NAMES ─────────────────────────────────────────────
 # Note: `volta list all` finds every tool Volta has registered, even if not
