@@ -35,8 +35,9 @@ current_version() { # $1 tool-name → prints "22.16.0", or "" if absent
   volta list --format=plain |
     awk -v t="$1" '
       {
-        split($2, a, "@")
-        if (a[1] == t) { print a[2]; exit }
+        # The last "@" starts the version; a scoped name also begins with "@".
+        i = match($2, /@[^@]*$/)
+        if (i > 1 && substr($2, 1, i - 1) == t) { print substr($2, i + 1); exit }
       }'
 }
 
@@ -94,7 +95,7 @@ IFS=$OLD_IFS
 # installed. The loop logic correctly handles this by treating tools with no
 # current version as a new installation.
 TOOLS=$(volta list all --format=plain |
-  awk 'NF>=2 {print $2}' | cut -d@ -f1 | sort -u)
+  awk 'NF>=2 { sub(/@[^@]*$/, "", $2); print $2 }' | sort -u)
 
 # ─── UPGRADE LOOP ─────────────────────────────────────────────────────────────
 for T in $TOOLS; do
